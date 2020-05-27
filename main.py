@@ -27,6 +27,14 @@ font = pygame.font.Font('fonts/freesansbold.ttf', 32)
 text_x = 10
 text_y = 10
 
+# Math operation
+font = pygame.font.Font('fonts/freesansbold.ttf', 32)
+math_x = 500
+math_y = 10
+operator_1 = random.randint(0, 10)
+operator_2 = random.randint(0, 10)
+next_math = True
+
 # Game over text
 game_over_font = pygame.font.Font('fonts/freesansbold.ttf', 64)
 
@@ -37,6 +45,9 @@ pause_font = pygame.font.Font('fonts/freesansbold.ttf', 64)
 pause_status = False
 you_loose = False
 
+def show_math(x,y):
+    operation = font.render(str(operator_1)+ " x " + str(operator_2) + " =", True, (255, 255, 255)) 
+    screen.blit(operation, (x, y))
 
 def show_score(x, y):
     score = font.render("Score: " + str(score_value), True, (255, 255, 255))
@@ -216,6 +227,7 @@ while running_game:
 
         player(player_x, player_y)
         show_score(text_x, text_y)
+        show_math(math_x, math_y)
     else:
         pause_text()
 
