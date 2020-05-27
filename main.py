@@ -28,7 +28,7 @@ text_x = 10
 text_y = 10
 
 # Math operation
-font = pygame.font.Font('fonts/freesansbold.ttf', 32)
+font_math = pygame.font.Font('fonts/freesansbold.ttf', 20)
 math_x = 500
 math_y = 10
 operator_1 = random.randint(0, 10)
@@ -83,6 +83,7 @@ monster_x = []
 monster_y = []
 monster_x_change = []
 monster_y_change = []
+monster_resoult = []
 number_enemies = 21
 real_time_enemies = 5
 
@@ -97,10 +98,12 @@ for i in range(number_enemies):
     monster_y.append(random.randint(50, 150))
     monster_x_change.append(2)
     monster_y_change.append(50)
+    monster_resoult.append(font_math.render(str(random.randint(0, 100)), True, (153, 0, 0)))
 
 
 def monster(x, y, i):
     screen.blit(monster_img[i], (x, y))
+    screen.blit(monster_resoult[i], (x+20, y+40))
 
 
 # Bullet
@@ -191,10 +194,10 @@ while running_game:
         for i in range(real_time_enemies):
             monster_x[i] += monster_x_change[i]
             if monster_x[i] <= 0:
-                monster_x_change[i] = 2
+                monster_x_change[i] = 1
                 monster_y[i] += monster_y_change[i]
             elif monster_x[i] >= 736:
-                monster_x_change[i] = -2
+                monster_x_change[i] = -1
                 monster_y[i] += monster_y_change[i]
             # Collision
             collision = is_Collision(monster_x[i], monster_y[i], bullet_x, bullet_y)
