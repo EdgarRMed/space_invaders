@@ -208,12 +208,8 @@ while running_game:
             # Collision
             collision = is_Collision(monster_x[i], monster_y[i], bullet_x, bullet_y)
             if collision:
-                explosionSound = mixer.Sound("sounds/explosion.wav")
-                explosionSound.set_volume(5)
-                explosionSound.play()
                 bullet_y = 480
                 bullet_shoot = False
-                score_value += 1
                 if score_value == 30:
                     player_img = pygame.image.load('images/player2_icon.png')
                 if score_value % 5 == 0:
@@ -226,11 +222,20 @@ while running_game:
 
                 # Check if is the correct answer when collision
                 if monster_values[i] == operator_1 * operator_2:
+                    explosionSound = mixer.Sound("sounds/explosion.wav")
+                    explosionSound.set_volume(5)
+                    explosionSound.play()
                     next_math = True
                     # update the screen
+                    score_value += 1
                     operator_1 = random.randint(0, 10)
                     operator_2 = random.randint(0, 10)
                     show_math(math_x, math_y)
+                else:
+                    explosionSound = mixer.Sound("sounds/incorrect.wav")
+                    explosionSound.set_volume(5)
+                    explosionSound.play()
+                    score_value -= 1
 
             # Define if the resoult is correct
             if next_math:
