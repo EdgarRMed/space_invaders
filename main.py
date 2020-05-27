@@ -33,6 +33,7 @@ math_x = 500
 math_y = 10
 operator_1 = random.randint(0, 10)
 operator_2 = random.randint(0, 10)
+correct_answer_monster_pos = 0
 next_math = True
 
 # Game over text
@@ -84,8 +85,10 @@ monster_y = []
 monster_x_change = []
 monster_y_change = []
 monster_resoult = []
+monster_values = []
 number_enemies = 21
 real_time_enemies = 5
+monster_value = 0
 
 for i in range(number_enemies):
     if 1 <= i <= 5:
@@ -98,10 +101,13 @@ for i in range(number_enemies):
     monster_y.append(random.randint(50, 150))
     monster_x_change.append(2)
     monster_y_change.append(50)
-    monster_resoult.append(font_math.render(str(random.randint(0, 100)), True, (153, 0, 0)))
+    monster_value = random.randint(0, 100)
+    monster_values.append(monster_value)
+    monster_resoult.append(font_math.render(str(monster_value), True, (153, 0, 0)))
 
 
 def monster(x, y, i):
+    #monster_resoult.insert(correct_answer_monster_pos, font_math.render(str(operator_1 * operator_2), True, (153, 0, 0)))
     screen.blit(monster_img[i], (x, y))
     screen.blit(monster_resoult[i], (x+20, y+40))
 
@@ -218,6 +224,26 @@ while running_game:
                 monster_x[i] = random.randint(0, 736)
                 monster_y[i] = random.randint(50, 150)
 
+                # Check if is the correct answer when collision
+                if monster_values[i] == operator_1 * operator_2:
+                    next_math = True
+                    # update the screen
+                    operator_1 = random.randint(0, 10)
+                    operator_2 = random.randint(0, 10)
+                    show_math(math_x, math_y)
+
+            # Define if the resoult is correct
+            if next_math:
+                monster_resoult.insert(correct_answer_monster_pos, font_math.render(str(operator_1 * operator_2), True, (153, 0, 0)))
+                monster_values.insert(correct_answer_monster_pos, operator_1*operator_2)
+
+                # Increase the correct answer counter
+                if correct_answer_monster_pos <= real_time_enemies:
+                    correct_answer_monster_pos += 1
+                else:
+                    correct_answer_monster_pos = 0
+
+                next_math = False
             monster(monster_x[i], monster_y[i], i)
 
         # Bullet movement
