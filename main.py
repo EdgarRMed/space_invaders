@@ -227,6 +227,11 @@ while running_game:
                     operator_1 = random.randint(0, 10)
                     operator_2 = random.randint(0, 10)
                     show_math(math_x, math_y)
+                    monster_x = []
+                    monster_y = []
+                    for i in range (number_enemies):
+                        monster_x.append(random.randint(0, 736))
+                        monster_y.append(random.randint(50, 150))
                 else:
                     number_lives -= 1
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
