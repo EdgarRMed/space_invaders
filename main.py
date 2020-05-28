@@ -25,7 +25,7 @@ pygame.display.set_icon(icon)
 score_value = 0
 font = pygame.font.Font('fonts/freesansbold.ttf', 32)
 text_x = 10
-text_y = 10
+text_y = 50
 
 # Math operation
 font_math = pygame.font.Font('fonts/freesansbold.ttf', 20)
@@ -65,6 +65,18 @@ def game_over_text():
 def pause_text():
     pause_text_message = pause_font.render("P A U S E ", True, (255, 255, 255))
     screen.blit(pause_text_message, (230, 250))
+
+# Lives
+heart_img = pygame.image.load('images/heart.png')
+lives_x = 10
+lives_y = 10
+number_lives = 10
+
+def lives(x, y):
+    for i in range(number_lives):
+        screen.blit(heart_img, (x, y))
+        x += 35
+
 
 
 # Player
@@ -218,7 +230,6 @@ while running_game:
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
                     explosionSound.set_volume(5)
                     explosionSound.play()
-                    score_value -= 1
 
             # Define if the resoult is correct
             if next_math:
@@ -247,6 +258,7 @@ while running_game:
         player(player_x, player_y)
         show_score(text_x, text_y)
         show_math(math_x, math_y)
+        lives(lives_x, lives_y)
     else:
         pause_text()
 
