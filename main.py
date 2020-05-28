@@ -86,17 +86,11 @@ monster_x_change = []
 monster_y_change = []
 monster_resoult = []
 monster_values = []
-number_enemies = 21
-real_time_enemies = 5
+number_enemies = 5
 monster_value = 0
 
 for i in range(number_enemies):
-    if 1 <= i <= 5:
-        monster_img.append(pygame.image.load('images/monster.png'))
-    elif 5 < i <= 10:
-        monster_img.append(pygame.image.load('images/monster2.png'))
-    elif i > 10:
-        monster_img.append(pygame.image.load('images/monster3.png'))
+    monster_img.append(pygame.image.load('images/monster.png'))
     monster_x.append(random.randint(0, 736))
     monster_y.append(random.randint(50, 150))
     monster_x_change.append(2)
@@ -107,7 +101,6 @@ for i in range(number_enemies):
 
 
 def monster(x, y, i):
-    #monster_resoult.insert(correct_answer_monster_pos, font_math.render(str(operator_1 * operator_2), True, (153, 0, 0)))
     screen.blit(monster_img[i], (x, y))
     screen.blit(monster_resoult[i], (x+20, y+40))
 
@@ -168,10 +161,9 @@ while running_game:
             # Restart when press r key
             if you_loose:
                 if event.key == pygame.K_r:
-                    real_time_enemies = 5
                     score_value = 0
                     you_loose = False
-                    for i in range(real_time_enemies):
+                    for i in range(number_enemies):
                         monster_y[i] = random.randint(50, 150)
 
         if event.type == pygame.KEYUP:
@@ -188,16 +180,16 @@ while running_game:
             player_x = 736
 
         # Enemy movement
-        for i in range(real_time_enemies):
+        for i in range(number_enemies):
             # Game over
             if monster_y[i] > 420:
-                for j in range(real_time_enemies):
+                for j in range(number_enemies):
                     monster_y[j] = 2000
                 game_over_text()
                 you_loose = True
                 break
 
-        for i in range(real_time_enemies):
+        for i in range(number_enemies):
             monster_x[i] += monster_x_change[i]
             if monster_x[i] <= 0:
                 monster_x_change[i] = 1
@@ -212,11 +204,7 @@ while running_game:
                 bullet_shoot = False
                 if score_value == 30:
                     player_img = pygame.image.load('images/player2_icon.png')
-                if score_value % 5 == 0:
-                    if real_time_enemies == number_enemies - 1:
-                        pass
-                    else:
-                        real_time_enemies += 1
+
                 monster_x[i] = random.randint(0, 736)
                 monster_y[i] = random.randint(50, 150)
 
@@ -243,10 +231,12 @@ while running_game:
                 monster_values.insert(correct_answer_monster_pos, operator_1*operator_2)
 
                 # Increase the correct answer counter
-                if correct_answer_monster_pos <= real_time_enemies:
+                if correct_answer_monster_pos < number_enemies:
                     correct_answer_monster_pos += 1
                 else:
                     correct_answer_monster_pos = 0
+                    monster_resoult.insert(correct_answer_monster_pos, font_math.render(str(operator_1 * operator_2), True, (153, 0, 0)))
+                    monster_values.insert(correct_answer_monster_pos, operator_1*operator_2)
 
                 next_math = False
             monster(monster_x[i], monster_y[i], i)
