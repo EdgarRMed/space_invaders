@@ -29,7 +29,8 @@ text_y = 50
 
 # Math operation
 font_math = pygame.font.Font('fonts/freesansbold.ttf', 20)
-math_x = 500
+font_math_operation = pygame.font.Font('fonts/freesansbold.ttf', 60)
+math_x = 620
 math_y = 10
 operator_1 = random.randint(0, 10)
 operator_2 = random.randint(0, 10)
@@ -47,7 +48,7 @@ pause_status = False
 you_loose = False
 
 def show_math(x,y):
-    operation = font.render(str(operator_1)+ " x " + str(operator_2) + " =", True, (255, 255, 255)) 
+    operation = font_math_operation.render(str(operator_1)+ " x " + str(operator_2), True, (255, 255, 255)) 
     screen.blit(operation, (x, y))
 
 def show_score(x, y):
@@ -98,7 +99,7 @@ monster_x_change = []
 monster_y_change = []
 monster_resoult = []
 monster_values = []
-number_enemies = 7
+number_enemies = 5
 monster_value = 0
 
 for i in range(number_enemies):
@@ -178,6 +179,7 @@ while running_game:
                     you_loose = False
                     for i in range(number_enemies):
                         monster_y[i] = random.randint(50, 150)
+                        monster_y_change[i] = 0.2
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -232,6 +234,7 @@ while running_game:
                     for i in range (number_enemies):
                         monster_x.append(random.randint(0, 736))
                         monster_y.append(random.randint(50, 150))
+                        monster_y_change[i] += .03
                 else:
                     number_lives -= 1
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
