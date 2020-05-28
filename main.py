@@ -70,7 +70,7 @@ def pause_text():
 heart_img = pygame.image.load('images/heart.png')
 lives_x = 10
 lives_y = 10
-number_lives = 10
+number_lives = 5
 
 def lives(x, y):
     for i in range(number_lives):
@@ -173,6 +173,7 @@ while running_game:
             # Restart when press r key
             if you_loose:
                 if event.key == pygame.K_r:
+                    number_lives = 5
                     score_value = 0
                     you_loose = False
                     for i in range(number_enemies):
@@ -194,7 +195,7 @@ while running_game:
         # Enemy movement
         for i in range(number_enemies):
             # Game over
-            if monster_y[i] > 420:
+            if monster_y[i] > 420 or number_lives == 0:
                 for j in range(number_enemies):
                     monster_y[j] = 2000
                 game_over_text()
@@ -227,6 +228,7 @@ while running_game:
                     operator_2 = random.randint(0, 10)
                     show_math(math_x, math_y)
                 else:
+                    number_lives -= 1
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
                     explosionSound.set_volume(5)
                     explosionSound.play()
