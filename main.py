@@ -32,8 +32,8 @@ font_math = pygame.font.Font('fonts/freesansbold.ttf', 20)
 font_math_operation = pygame.font.Font('fonts/freesansbold.ttf', 60)
 math_x = 620
 math_y = 10
-operator_1 = random.randint(0, 10)
-operator_2 = random.randint(0, 10)
+operator_1 = random.randint(1, 10)
+operator_2 = random.randint(1, 10)
 correct_answer_monster_pos = 0
 next_math = True
 
@@ -226,8 +226,8 @@ while running_game:
                     next_math = True
                     # update the screen
                     score_value += 1
-                    operator_1 = random.randint(0, 10)
-                    operator_2 = random.randint(0, 10)
+                    operator_1 = random.randint(1, 10)
+                    operator_2 = random.randint(1, 10)
                     show_math(math_x, math_y)
                     monster_x = []
                     monster_y = []
