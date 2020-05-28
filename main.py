@@ -234,7 +234,7 @@ while running_game:
                     for i in range (number_enemies):
                         monster_x.append(random.randint(0, 736))
                         monster_y.append(random.randint(50, 150))
-                        monster_y_change[i] += .03
+                        monster_y_change[i] += .02
                 else:
                     number_lives -= 1
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
