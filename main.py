@@ -7,13 +7,14 @@ from pygame import mixer
 pygame.init()
 
 # Create the screen
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 1000))
 
 # Background
 background = pygame.image.load('images/bg.jpg')
 
 # Sound
 mixer.music.load("sounds/sw.wav")
+mixer.music.set_volume(.1)
 mixer.music.play(-1)
 
 # Title and icon
@@ -83,7 +84,7 @@ def lives(x, y):
 # Player
 player_img = pygame.image.load('images/player_icon.png')
 player_x = 370
-player_y = 480
+player_y = 880
 player_x_change = 0
 
 
@@ -101,13 +102,19 @@ monster_resoult = []
 monster_values = []
 number_enemies = 5
 monster_value = 0
+dis = 50
 
 for i in range(number_enemies):
     monster_img.append(pygame.image.load('images/monster.png'))
-    monster_x.append(random.randint(0, 736))
+    if dis < 750:
+        dis += 100
+        monster_x.append(dis)
+    else:
+        dis = 50
+        monster_x.append(dis)
     monster_y.append(random.randint(50, 150))
     monster_x_change.append(0)
-    monster_y_change.append(0.2)
+    monster_y_change.append(0.05)
     monster_value = random.randint(0, 100)
     monster_values.append(monster_value)
     monster_resoult.append(font_math.render(str(monster_value), True, (153, 0, 0)))
@@ -121,9 +128,9 @@ def monster(x, y, i):
 # Bullet
 bullet_img = pygame.image.load('images/bullet.png')
 bullet_x = 0
-bullet_y = 480
+bullet_y = 880
 bullet_x_change = 0
-bullet_y_change = 9
+bullet_y_change = 2
 bullet_shoot = False
 
 
@@ -156,9 +163,9 @@ while running_game:
         if event.type == pygame.KEYDOWN:
             if not pause_status:
                 if event.key == pygame.K_LEFT:
-                    player_x_change = -3.5
+                    player_x_change = -1
                 if event.key == pygame.K_RIGHT:
-                    player_x_change = 3.5
+                    player_x_change = 1
                 if event.key == pygame.K_SPACE:
                     if not bullet_shoot:
                         bulletSound = mixer.Sound("sounds/laser.wav")
@@ -197,7 +204,7 @@ while running_game:
         # Enemy movement
         for i in range(number_enemies):
             # Game over
-            if monster_y[i] > 420 or number_lives == 0:
+            if monster_y[i] > 820 or number_lives == 0:
                 for j in range(number_enemies):
                     monster_y[j] = 2000
                 game_over_text()
@@ -210,7 +217,7 @@ while running_game:
             # Collision
             collision = is_Collision(monster_x[i], monster_y[i], bullet_x, bullet_y)
             if collision:
-                bullet_y = 480
+                bullet_y = 880
                 bullet_shoot = False
                 if score_value == 30:
                     player_img = pygame.image.load('images/player2_icon.png')
@@ -232,9 +239,14 @@ while running_game:
                     monster_x = []
                     monster_y = []
                     for i in range (number_enemies):
-                        monster_x.append(random.randint(0, 736))
+                        if dis < 750:
+                            dis += 100
+                            monster_x.append(dis)
+                        else:
+                            dis = 50
+                            monster_x.append(dis)
                         monster_y.append(random.randint(50, 150))
-                        monster_y_change[i] += .02
+                        monster_y_change[i] += .01
                 else:
                     number_lives -= 1
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
@@ -259,7 +271,7 @@ while running_game:
 
         # Bullet movement
         if bullet_y <= 0:
-            bullet_y = 480
+            bullet_y = 880
             bullet_shoot = False
         if bullet_shoot:
             fire_bullet(bullet_x, bullet_y)
