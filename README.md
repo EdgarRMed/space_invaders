@@ -1,7 +1,8 @@
 # space_invaders
 Juego de naves espaciales hecho en Python3.8 usando pygame.
-# Versión matemática
-El juego cuenta con una versión para aprender las tablas de multiplicar que se encuentra en la rama matematicas_estatico_vertical donde tendrá varios intentos para ir destruyendo a los enemigos con el reslutado correcto de la multiplicación, con el paso del tiempo irá aumentando el nivel y la cantidad de enemigos.
 
-![alt text](https://github.com/EdgarRMed/space_invaders/blob/master/images/1.png)
+Versión 1: Juego normal de naves espaciales, cuyo objetivo es destruir el mayor
+número de enemigos antes de que lleguen a ti
 
+Version 2: Juego matemático para aprender las tablas de multiplicar de una forma 
+divetida incrementado la velocidad cada que acieta un disparo

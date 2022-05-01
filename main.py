@@ -7,13 +7,14 @@ from pygame import mixer
 pygame.init()
 
 # Create the screen
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 1000))
 
 # Background
 background = pygame.image.load('images/bg.jpg')
 
 # Sound
-mixer.music.load("sounds/bgs.wav")
+mixer.music.load("sounds/sw.wav")
+mixer.music.set_volume(.1)
 mixer.music.play(-1)
 
 # Title and icon
@@ -25,14 +26,15 @@ pygame.display.set_icon(icon)
 score_value = 0
 font = pygame.font.Font('fonts/freesansbold.ttf', 32)
 text_x = 10
-text_y = 10
+text_y = 50
 
 # Math operation
 font_math = pygame.font.Font('fonts/freesansbold.ttf', 20)
-math_x = 500
+font_math_operation = pygame.font.Font('fonts/freesansbold.ttf', 60)
+math_x = 620
 math_y = 10
-operator_1 = random.randint(0, 10)
-operator_2 = random.randint(0, 10)
+operator_1 = random.randint(1, 10)
+operator_2 = random.randint(1, 10)
 correct_answer_monster_pos = 0
 next_math = True
 
@@ -47,7 +49,7 @@ pause_status = False
 you_loose = False
 
 def show_math(x,y):
-    operation = font.render(str(operator_1)+ " x " + str(operator_2) + " =", True, (255, 255, 255)) 
+    operation = font_math_operation.render(str(operator_1)+ " x " + str(operator_2), True, (255, 255, 255)) 
     screen.blit(operation, (x, y))
 
 def show_score(x, y):
@@ -66,11 +68,23 @@ def pause_text():
     pause_text_message = pause_font.render("P A U S E ", True, (255, 255, 255))
     screen.blit(pause_text_message, (230, 250))
 
+# Lives
+heart_img = pygame.image.load('images/heart.png')
+lives_x = 10
+lives_y = 10
+number_lives = 5
+
+def lives(x, y):
+    for i in range(number_lives):
+        screen.blit(heart_img, (x, y))
+        x += 35
+
+
 
 # Player
 player_img = pygame.image.load('images/player_icon.png')
 player_x = 370
-player_y = 480
+player_y = 880
 player_x_change = 0
 
 
@@ -86,28 +100,27 @@ monster_x_change = []
 monster_y_change = []
 monster_resoult = []
 monster_values = []
-number_enemies = 21
-real_time_enemies = 5
+number_enemies = 5
 monster_value = 0
+dis = 50
 
 for i in range(number_enemies):
-    if 1 <= i <= 5:
-        monster_img.append(pygame.image.load('images/monster.png'))
-    elif 5 < i <= 10:
-        monster_img.append(pygame.image.load('images/monster2.png'))
-    elif i > 10:
-        monster_img.append(pygame.image.load('images/monster3.png'))
-    monster_x.append(random.randint(0, 736))
+    monster_img.append(pygame.image.load('images/monster.png'))
+    if dis < 750:
+        dis += 100
+        monster_x.append(dis)
+    else:
+        dis = 50
+        monster_x.append(dis)
     monster_y.append(random.randint(50, 150))
-    monster_x_change.append(2)
-    monster_y_change.append(50)
+    monster_x_change.append(0)
+    monster_y_change.append(0.05)
     monster_value = random.randint(0, 100)
     monster_values.append(monster_value)
     monster_resoult.append(font_math.render(str(monster_value), True, (153, 0, 0)))
 
 
 def monster(x, y, i):
-    #monster_resoult.insert(correct_answer_monster_pos, font_math.render(str(operator_1 * operator_2), True, (153, 0, 0)))
     screen.blit(monster_img[i], (x, y))
     screen.blit(monster_resoult[i], (x+20, y+40))
 
@@ -115,9 +128,9 @@ def monster(x, y, i):
 # Bullet
 bullet_img = pygame.image.load('images/bullet.png')
 bullet_x = 0
-bullet_y = 480
+bullet_y = 880
 bullet_x_change = 0
-bullet_y_change = 9
+bullet_y_change = 2
 bullet_shoot = False
 
 
@@ -150,9 +163,9 @@ while running_game:
         if event.type == pygame.KEYDOWN:
             if not pause_status:
                 if event.key == pygame.K_LEFT:
-                    player_x_change = -3.5
+                    player_x_change = -1
                 if event.key == pygame.K_RIGHT:
-                    player_x_change = 3.5
+                    player_x_change = 1
                 if event.key == pygame.K_SPACE:
                     if not bullet_shoot:
                         bulletSound = mixer.Sound("sounds/laser.wav")
@@ -168,11 +181,12 @@ while running_game:
             # Restart when press r key
             if you_loose:
                 if event.key == pygame.K_r:
-                    real_time_enemies = 5
+                    number_lives = 5
                     score_value = 0
                     you_loose = False
-                    for i in range(real_time_enemies):
+                    for i in range(number_enemies):
                         monster_y[i] = random.randint(50, 150)
+                        monster_y_change[i] = 0.2
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
@@ -188,35 +202,26 @@ while running_game:
             player_x = 736
 
         # Enemy movement
-        for i in range(real_time_enemies):
+        for i in range(number_enemies):
             # Game over
-            if monster_y[i] > 420:
-                for j in range(real_time_enemies):
+            if monster_y[i] > 820 or number_lives == 0:
+                for j in range(number_enemies):
                     monster_y[j] = 2000
                 game_over_text()
                 you_loose = True
                 break
 
-        for i in range(real_time_enemies):
-            monster_x[i] += monster_x_change[i]
-            if monster_x[i] <= 0:
-                monster_x_change[i] = 1
-                monster_y[i] += monster_y_change[i]
-            elif monster_x[i] >= 736:
-                monster_x_change[i] = -1
-                monster_y[i] += monster_y_change[i]
+        for i in range(number_enemies):
+            monster_y[i] += monster_y_change[i]
+            
             # Collision
             collision = is_Collision(monster_x[i], monster_y[i], bullet_x, bullet_y)
             if collision:
-                bullet_y = 480
+                bullet_y = 880
                 bullet_shoot = False
                 if score_value == 30:
                     player_img = pygame.image.load('images/player2_icon.png')
-                if score_value % 5 == 0:
-                    if real_time_enemies == number_enemies - 1:
-                        pass
-                    else:
-                        real_time_enemies += 1
+
                 monster_x[i] = random.randint(0, 736)
                 monster_y[i] = random.randint(50, 150)
 
@@ -228,14 +233,25 @@ while running_game:
                     next_math = True
                     # update the screen
                     score_value += 1
-                    operator_1 = random.randint(0, 10)
-                    operator_2 = random.randint(0, 10)
+                    operator_1 = random.randint(1, 10)
+                    operator_2 = random.randint(1, 10)
                     show_math(math_x, math_y)
+                    monster_x = []
+                    monster_y = []
+                    for i in range (number_enemies):
+                        if dis < 750:
+                            dis += 100
+                            monster_x.append(dis)
+                        else:
+                            dis = 50
+                            monster_x.append(dis)
+                        monster_y.append(random.randint(50, 150))
+                        monster_y_change[i] += .01
                 else:
+                    number_lives -= 1
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
                     explosionSound.set_volume(5)
                     explosionSound.play()
-                    score_value -= 1
 
             # Define if the resoult is correct
             if next_math:
@@ -243,17 +259,19 @@ while running_game:
                 monster_values.insert(correct_answer_monster_pos, operator_1*operator_2)
 
                 # Increase the correct answer counter
-                if correct_answer_monster_pos <= real_time_enemies:
+                if correct_answer_monster_pos < number_enemies:
                     correct_answer_monster_pos += 1
                 else:
                     correct_answer_monster_pos = 0
+                    monster_resoult.insert(correct_answer_monster_pos, font_math.render(str(operator_1 * operator_2), True, (153, 0, 0)))
+                    monster_values.insert(correct_answer_monster_pos, operator_1*operator_2)
 
                 next_math = False
             monster(monster_x[i], monster_y[i], i)
 
         # Bullet movement
         if bullet_y <= 0:
-            bullet_y = 480
+            bullet_y = 880
             bullet_shoot = False
         if bullet_shoot:
             fire_bullet(bullet_x, bullet_y)
@@ -262,6 +280,7 @@ while running_game:
         player(player_x, player_y)
         show_score(text_x, text_y)
         show_math(math_x, math_y)
+        lives(lives_x, lives_y)
     else:
         pause_text()
 
