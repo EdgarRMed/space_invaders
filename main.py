@@ -31,7 +31,7 @@ text_y = 50
 # Math operation
 font_math = pygame.font.Font("fonts/freesansbold.ttf", 20)
 font_math_operation = pygame.font.Font("fonts/freesansbold.ttf", 60)
-math_x = 620
+math_x = 590
 math_y = 10
 operator_1 = random.randint(1, 10)
 operator_2 = random.randint(1, 10)
@@ -196,13 +196,13 @@ while running_game:
                     you_loose = False
                     for i in range(number_enemies):
                         monster_y[i] = random.randint(50, 150)
-                        monster_y_change[i] = 0.2
+                        monster_y_change[i] = 0.05
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player_x_change = 0
 
-    # MOVEMENT..........................................................................................................
+    # MOVEMENT..............................................................
     if not pause_status:
         # Player movement
         player_x += player_x_change
@@ -256,7 +256,7 @@ while running_game:
                             dis = 50
                             monster_x.append(dis)
                         monster_y.append(random.randint(50, 150))
-                        monster_y_change[i] += 0.01
+                        monster_y_change[i] += 0.01  # Increase the speed of the enemies
                 else:
                     number_lives -= 1
                     explosionSound = mixer.Sound("sounds/incorrect.wav")
@@ -306,5 +306,5 @@ while running_game:
     else:
         pause_text()
 
-        # END MOVEMENT..................................................................................................
+    # END MOVEMENT........................................
     pygame.display.update()
