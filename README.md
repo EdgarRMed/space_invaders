@@ -1,5 +1,6 @@
 # space_invaders
 Juego de naves espaciales hecho en Python3.8 usando pygame.
+
 Versión 1: Juego normal de naves espaciales, cuyo objetivo es destruir el mayor
 número de enemigos antes de que lleguen a ti
 
